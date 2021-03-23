@@ -1,0 +1,100 @@
+$smallWidth: 400px;
+$fullWidth: 90vw;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@mixin fadeInAnimation {
+  animation-name: fadeIn;
+  animation-delay: 1s;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes stretch {
+  to {
+    width: $fullWidth;
+  }
+}
+@mixin stretchAnimation {
+  animation-name: stretch;
+  animation-delay: 0.5s;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideLeft {
+  to {
+    transform: translateX(0%);
+  }
+}
+@mixin slideLeftAnimation {
+  animation-name: slideLeft;
+  animation-delay: 0.5s;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@media only screen and (max-width: 400px) {
+  .flex-container {
+    width: 100%;
+  }
+  .title-wrapper {
+    width: 100%;
+  }
+}
+
+.flex-container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+  &.small {
+    .content-wrapper {
+      width: $smallWidth;
+    }
+    align-items: center;
+  }
+}
+
+.content-wrapper {
+  align-self: center;
+  width: $fullWidth;
+  * {  
+    width: 100%;
+  }
+}
+
+.title-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: $smallWidth;
+  margin-top: 2vh;
+  &.animateStretch {
+    @include stretchAnimation;
+    h1 {
+      @include slideLeftAnimation;
+      span {
+        @include slideLeftAnimation;
+      }
+    }
+  }
+}
+
+h1 {
+  display: block;
+  transform: translateX(50%);
+  span {
+    display: inline-block;
+    transform: translateX(-50%);
+  }
+}
+
+

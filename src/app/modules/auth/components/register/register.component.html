@@ -1,0 +1,41 @@
+<div class="register-wrapper" fxLayout="column">
+  <div class="header-wrapper">
+    <div class="left">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="center">
+      <h1 class="header">
+        GMDSS
+      </h1>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column">
+    <mat-error *ngIf="invalid">
+      {{ error ? error : 'Provided data is invalid' }}
+    </mat-error>
+    <mat-form-field class="full-width-input">
+      <input matInput placeholder="Username" formControlName="username" required>
+      <mat-error>
+        Please provide a valid username
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input">
+      <input matInput placeholder="Email" formControlName="email" required>
+      <mat-error>
+        Please provide a valid email address
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input">
+      <input matInput type="password" placeholder="Password" formControlName="password" required>
+      <mat-error>
+        Please provide a valid password
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary">
+      Register
+    </button>
+  </form>
+</div>

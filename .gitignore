@@ -1,0 +1,13 @@
+# config files
+*prod.env
+*dev.env
+
+# compiled output
+/public
+
+# dependencies
+/node_modules
+
+# editor
+.vscode
+

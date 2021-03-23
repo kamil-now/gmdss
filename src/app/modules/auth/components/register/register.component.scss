@@ -1,0 +1,43 @@
+.register-wrapper {
+  width: 90vw;
+  max-width: 400px;
+  margin: 5vh auto;
+  text-align: center;
+}
+
+.header {
+  margin: 1rem 0;
+}
+
+button {
+  margin: 1rem 0;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+mat-form-field {
+  display: block;
+  margin-top: 1rem;
+}
+
+mat-error {
+  margin-top: 1rem;
+}
+
+.header-wrapper {
+  width: 100%;
+}
+.left {
+  height: 100%;
+  float: left;
+  width: 100px;
+  text-align: left;
+}
+.center {
+  margin: 0 auto;
+  width: 100px;
+}
+
+mat-icon-button {
+  margin-top: 1rem;
+}
