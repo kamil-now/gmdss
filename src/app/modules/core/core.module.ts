@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -12,6 +16,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
+import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 
 const routes: Routes = [
   {
@@ -24,15 +29,18 @@ const routes: Routes = [
       }
     ]
   }
-]
+];
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    QuizDetailsComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatIconModule,
     MatInputModule,
@@ -40,7 +48,11 @@ const routes: Routes = [
     MatDividerModule,
     MatToolbarModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatCheckboxModule
   ]
 })
 export class CoreModule {

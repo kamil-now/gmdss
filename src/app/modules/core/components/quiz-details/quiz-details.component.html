@@ -1,0 +1,120 @@
+<form [formGroup]="quizForm" (ngSubmit)="onSubmit()" fxLayout="column">
+  <mat-form-field>
+    <mat-label>Quiz title</mat-label>
+    <input matInput formControlName="quizTitle" />
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <div formArrayName="sets">
+    <mat-accordion multi>
+      <div *ngFor="let set of setsFormArray?.controls; let setindex = index">
+        <div [formGroupName]="setindex">
+          <mat-expansion-panel [expanded]="true">
+            <mat-form-field>
+              <mat-label>Question set title</mat-label>
+              <input matInput formControlName="setTitle" />
+            </mat-form-field>
+            <div formArrayName="questions">
+              <div
+                *ngFor="
+                  let question of getSetQuestions(setindex)?.controls;
+                  let questionindex = index
+                "
+              >
+                <div [formGroupName]="questionindex">
+                  <mat-form-field>
+                    <mat-label>Question text</mat-label>
+                    <input matInput formControlName="questionText" />
+                  </mat-form-field>
+                  <div formArrayName="answers">
+                    <div
+                      *ngFor="
+                        let answer of getQuestionAnswers(
+                          setindex,
+                          questionindex
+                        )?.controls;
+                        let answerindex = index
+                      "
+                    >
+                      <div [formGroupName]="answerindex">
+                        <mat-form-field>
+                          <mat-label>Answer text</mat-label>
+                          <input matInput formControlName="answerText" />
+                        </mat-form-field>
+                        <mat-checkbox
+                          (change)="
+                            changeIsAnswerCorrect(
+                              setindex,
+                              questionindex,
+                              answerindex,
+                              $event
+                            )
+                          "
+                        >
+                          Is correct
+                        </mat-checkbox>
+                        <input
+                          id="input"
+                          type="hidden"
+                          formControlName="isCorrect"
+                        />
+                        <button
+                          mat-raised-button
+                          type="button"
+                          color="secondary"
+                          (click)="
+                            removeAnswer(setindex, questionindex, answerindex)
+                          "
+                        >
+                          Remove answer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    mat-raised-button
+                    type="button"
+                    color="secondary"
+                    (click)="addAnswer(setindex, questionindex)"
+                  >
+                    Add answer
+                  </button>
+                  <button
+                    mat-raised-button
+                    type="button"
+                    color="secondary"
+                    (click)="removeQuestion(setindex, questionindex)"
+                  >
+                    Remove question
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button
+              mat-raised-button
+              type="button"
+              color="secondary"
+              (click)="addQuestion(setindex)"
+            >
+              Add question
+            </button>
+            <button
+              mat-raised-button
+              type="button"
+              color="secondary"
+              (click)="removeSet(setindex)"
+            >
+              Remove set
+            </button>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </mat-accordion>
+  </div>
+
+  <button mat-raised-button type="button" color="secondary" (click)="addSet()">
+    Add set
+  </button>
+
+  <mat-divider></mat-divider>
+  <button mat-raised-button color="primary" type="submit">Save</button>
+</form>
