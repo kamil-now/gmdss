@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
@@ -25,12 +25,6 @@ export class RegisterComponent implements OnInit {
   public ngOnInit(): void {
     this.form = this._fb.group(
       {
-        username: new FormControl(),
-        email: new FormControl(),
-        password: new FormControl()
-      },
-
-      {
         username: ['', Validators.required],
         email: ['', Validators.email],
         password: ['', Validators.required]
@@ -45,13 +39,16 @@ export class RegisterComponent implements OnInit {
           username: this.form.get('username')?.value,
           password: this.form.get('password')?.value,
           email: this.form.get('email')?.value
-        }
+        };
+
         this._authService.registerUser(user)
-          .subscribe(success => {
-            if (success) {
-              this.goBack();
-            } else {
-              this.invalid = true;
+          .subscribe({
+            next: (success: boolean) => {
+              if (success) {
+                this.goBack();
+              } else {
+                this.invalid = true;
+              }
             }
           });
 

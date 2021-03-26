@@ -4,4 +4,4 @@ export type User = {
   password: string;
   email?: string;
   googleid?: string;
-}
+};

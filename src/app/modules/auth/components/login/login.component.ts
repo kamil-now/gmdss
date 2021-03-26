@@ -33,17 +33,20 @@ export class LoginComponent implements OnInit {
     this.invalid = false;
     if (this.form.valid) {
       try {
-        let user: User = {
+        const user: User = {
           username: this.form.get('username')?.value,
           password: this.form.get('password')?.value
         };
-        this._authService.loginUser(user).subscribe(success => {
-          if (success) {
-            this._router.navigate(['/']);
-          } else {
-            this.invalid = true;
-          }
-        });
+        this._authService.loginUser(user)
+          .subscribe({
+            next: (success: boolean) => {
+              if (success) {
+                this._router.navigate(['/']);
+              } else {
+                this.invalid = true;
+              }
+            }
+          });
       } catch (err) {
         this.error = err;
         this.invalid = true;

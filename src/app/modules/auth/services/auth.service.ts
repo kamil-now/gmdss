@@ -4,10 +4,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { cast, Is } from 'src/app/shared/utils/utils';
+import { cast, isDefined } from 'src/app/shared/utils/utils';
 import { LoginData } from '../models/login-data';
 import { User } from '../models/user';
-
 @Injectable()
 export class AuthService extends ApiService {
 
@@ -24,7 +23,7 @@ export class AuthService extends ApiService {
   public loginUser(user: User): Observable<boolean> {
     return this.post<LoginData>('/login', JSON.stringify(user))
       .pipe(mergeMap(data => {
-        if (Is.Defined(data.token)) {
+        if (isDefined(data.token)) {
           this.storeUserData(data.token, data.user);
           return of(true);
         }
@@ -41,7 +40,7 @@ export class AuthService extends ApiService {
   }
 
   public isLoggedIn(): boolean {
-    if (!Is.Defined(this.authToken)) {
+    if (!isDefined(this.authToken)) {
       return false;
     }
     return !this._jwtService.isTokenExpired(cast<string>(this.authToken));
@@ -62,7 +61,7 @@ export class AuthService extends ApiService {
   public loadToken(): void {
     this.authToken = localStorage.getItem('id_token');
     const storageData = localStorage.getItem('user');
-    if (Is.Defined(storageData)) {
+    if (isDefined(storageData)) {
       this.user = JSON.parse(cast<string>(storageData));
     }
   }

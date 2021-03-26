@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,12 +14,15 @@ export class LoginProxyComponent implements OnInit {
   ) {
   }
   public ngOnInit(): void {
-    this._activatedRoute.queryParams.subscribe(params => {
-      let data = JSON.parse(params['data']);
-      if (data.success) {
-        this._authService.storeUserData(data.token, data.user);
-      }
-      this._router.navigate(['/']);
-    });
+    this._activatedRoute.queryParams
+      .subscribe({
+        next: (params: Params) => {
+          const data = JSON.parse(params.data);
+          if (data.success) {
+            this._authService.storeUserData(data.token, data.user);
+          }
+          this._router.navigate(['/']);
+        }
+      });
   }
 }

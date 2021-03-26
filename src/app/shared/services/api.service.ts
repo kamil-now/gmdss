@@ -2,12 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { EMPTY } from 'rxjs/internal/observable/empty';
 import { of } from 'rxjs/internal/observable/of';
-import { mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Response } from '../models/response';
 import { cast } from '../utils/utils';
 
-export interface IHttpOptions {
+interface IHttpOptions {
   observe: 'body';
   responseType: 'json';
   withCredentials?: boolean;
@@ -20,8 +20,9 @@ export abstract class ApiService {
     return this._apiUrl + this.name;
   }
 
-  private readonly _apiUrl = environment.apiUrl;
   protected options: IHttpOptions;
+
+  private readonly _apiUrl = environment.apiUrl;
 
   protected constructor(
     protected readonly http: HttpClient,
@@ -46,12 +47,12 @@ export abstract class ApiService {
     const requestOptions = options ? options : this.options;
     return this.http.get<Response<void>>(this._formatUrl(name), requestOptions)
       .pipe(
-        mergeMap(res => this._handleBasic(res))
+        map(res => this._handleBasic(res))
       );
   }
 
   protected getWithCredentials<T = any>(name?: string): Observable<T> {
-    let opt = this.options;
+    const opt = this.options;
     opt.withCredentials = true;
     return this.http.get<Response<T>>(this._formatUrl(name), opt)
       .pipe(
@@ -63,7 +64,7 @@ export abstract class ApiService {
     const requestOptions = options ? options : this.options;
     return this.http.post<Response<void>>(this._formatUrl(name), body, requestOptions)
       .pipe(
-        mergeMap(res => this._handleBasic(res))
+        map(res => this._handleBasic(res))
       );
   }
 
@@ -83,7 +84,7 @@ export abstract class ApiService {
   }
 
   protected postWithCredentials<T = any>(name: string, body: string): Observable<T> {
-    let opt = this.options;
+    const opt = this.options;
     opt.withCredentials = true;
     return this.http.post<Response<T>>(this._formatUrl(name), body, opt)
       .pipe(
@@ -106,11 +107,11 @@ export abstract class ApiService {
     return EMPTY;
   }
 
-  private _handleBasic<T>(res: Response<void>): Observable<boolean> {
+  private _handleBasic(res: Response<void>): boolean {
     if (!res.success) {
       console.error(res.msg);
     }
-    return of(res.success);
+    return res.success;
   }
 
   private _formatUrl(name?: string): string {
