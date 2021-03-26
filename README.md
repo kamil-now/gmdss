@@ -6,7 +6,7 @@ WORK IN PROGRESS
 Frontend: `ng serve` -  `http://localhost:4200/`
 Server: `npm run dev` or `npm run prod`
 
-config files must be created for each env to work (config.dev.env & config.prod.env): [template](https://github.com/spoqk/gmdss/server/config/config.temp.env)
+config files must be created for each env to work (config.dev.env & config.prod.env): [template](https://github.com/spoqk/gmdss/blob/master/server/config/config.temp.env)
 
 nodemon `sudo npm install -g nodemon`
 
