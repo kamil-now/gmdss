@@ -17,6 +17,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
+import { QuizService } from './services/quiz.service';
 
 const routes: Routes = [
   {
@@ -56,4 +57,12 @@ const routes: Routes = [
   ]
 })
 export class CoreModule {
+  static forRoot(): ModuleWithProviders<CoreModule> {
+    return {
+      ngModule: CoreModule,
+      providers: [
+        QuizService
+      ]
+    };
+  }
 }

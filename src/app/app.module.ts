@@ -12,9 +12,9 @@ import { CoreModule } from './modules/core/core.module';
   ],
   imports: [
     AuthModule.forRoot(),
+    CoreModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    CoreModule,
     BrowserModule,
     BrowserAnimationsModule
   ],

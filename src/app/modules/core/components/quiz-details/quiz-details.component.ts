@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { cast } from 'src/app/shared/utils/utils';
+import { QuestionSet } from '../../models/question-set';
+import { Quiz } from '../../models/quiz';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
   selector: 'app-quiz-details',
@@ -10,17 +13,23 @@ import { cast } from 'src/app/shared/utils/utils';
 })
 export class QuizDetailsComponent implements OnInit {
 
+  @Output() quizCreated: EventEmitter<void> = new EventEmitter<void>();
+
   get setsFormArray(): FormArray {
     return cast<FormArray>(this.quizForm.get('sets'));
   }
 
   quizForm: FormGroup = this._fb.group({
-    quizTitle: '',
+    title: '',
     sets: this._fb.array([])
   });
 
+  invalid!: boolean;
+  error!: string;
+
   constructor(
-    private readonly _fb: FormBuilder
+    private readonly _fb: FormBuilder,
+    private readonly _quizService: QuizService
   ) {
   }
 
@@ -42,21 +51,21 @@ export class QuizDetailsComponent implements OnInit {
 
   createSetFormGroup(): FormGroup {
     return this._fb.group({
-      setTitle: '',
+      title: '',
       questions: this._fb.array([])
     });
   }
 
   createQuestionFormGroup(): FormGroup {
     return this._fb.group({
-      questionText: '',
+      text: '',
       answers: this._fb.array([])
     });
   }
 
   createAnswerFormGroup(): FormGroup {
     return this._fb.group({
-      answerText: '',
+      text: '',
       isCorrect: false
     });
   }
@@ -86,6 +95,27 @@ export class QuizDetailsComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    // TODO
+    this.invalid = false;
+    if (this.quizForm.valid) {
+      try {
+        const quiz: Quiz = {
+          title: cast<string>(this.quizForm.get('title')?.value).trim(),
+          sets: cast<QuestionSet[]>(this.quizForm.get('sets')?.value)
+        };
+        this._quizService.createQuiz(quiz)
+          .subscribe({
+            next: (success: boolean) => {
+              if (success) {
+                this.quizCreated.emit();
+              } else {
+                this.invalid = true;
+              }
+            }
+          });
+      } catch (err) {
+        this.error = err;
+        this.invalid = true;
+      }
+    }
   }
 }
