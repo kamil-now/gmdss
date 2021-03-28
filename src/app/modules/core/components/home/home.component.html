@@ -1,3 +1,4 @@
 <app-wrapper [stretch]="true">
-  <app-quiz-details> </app-quiz-details>
+  <app-quiz-list #list></app-quiz-list>
+  <app-quiz-details (quizCreated)="list.refresh()"> </app-quiz-details>
 </app-wrapper>

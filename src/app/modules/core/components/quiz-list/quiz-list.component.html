@@ -1,0 +1,10 @@
+<ng-container *ngIf="(quizList$ | async) != null; else loading">
+  <ng-container *ngFor="let quiz of quizList$ | async">
+    <mat-action-list>
+      <button mat-list-item (click)="editQuiz(quiz)">{{ quiz.title }}</button>
+    </mat-action-list>
+  </ng-container>
+</ng-container>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"> </mat-progress-bar>
+</ng-template>
