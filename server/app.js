@@ -8,6 +8,7 @@ const connectDB = require('./config/database').connectDB
 
 const user = require('./routes/user')
 const auth = require('./routes/auth')
+const quiz = require('./routes/quiz')
 
 // Load config
 dotenv.config({ path: __dirname + `/config/config.${process.env.NODE_ENV}.env` })
@@ -40,6 +41,7 @@ app.use(express.urlencoded({ extended: true }))
 // Routes
 app.use('/auth', auth)
 app.use('/user', user)
+app.use('/quiz', quiz)
 
 // Set static folder
 app.use(express.static(path.join(__dirname, './public')));
