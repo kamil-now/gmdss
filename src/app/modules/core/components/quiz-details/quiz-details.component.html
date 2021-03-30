@@ -11,7 +11,13 @@
     <mat-accordion multi>
       <div *ngFor="let set of setsFormArray?.controls; let setindex = index">
         <div [formGroupName]="setindex">
-          <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ set.get("title")?.value }}
+                {{ set.get("title")?.valueChanges | async }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
             <mat-form-field>
               <mat-label>Question set title</mat-label>
               <input matInput formControlName="title" />
