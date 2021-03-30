@@ -83,6 +83,14 @@ export abstract class ApiService {
       );
   }
 
+  protected deleteBasic(name: string, options?: IHttpOptions): Observable<boolean> {
+    const requestOptions = options ? options : this.options;
+    return this.http.delete<Response<void>>(this._formatUrl(name), requestOptions)
+      .pipe(
+        map(res => this._handleBasic(res))
+      );
+  }
+
   protected postWithCredentials<T = any>(name: string, body: string): Observable<T> {
     const opt = this.options;
     opt.withCredentials = true;
@@ -96,6 +104,14 @@ export abstract class ApiService {
     return this.http.put<Response<T>>(this._formatUrl(name), body, this.options)
       .pipe(
         mergeMap(res => this._handleResponse<T>(res))
+      );
+  }
+
+  protected putBasic(name: string, body: string, options?: IHttpOptions): Observable<boolean> {
+    const requestOptions = options ? options : this.options;
+    return this.http.put<Response<void>>(this._formatUrl(name), body, requestOptions)
+      .pipe(
+        map(res => this._handleBasic(res))
       );
   }
 

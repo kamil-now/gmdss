@@ -18,4 +18,12 @@ export class QuizService extends ApiService {
   public createQuiz(quiz: Quiz): Observable<boolean> {
     return this.postBasic('/create', JSON.stringify(quiz));
   }
+
+  public updateQuiz(quiz: Quiz): Observable<boolean> {
+    return this.putBasic('/update', JSON.stringify(quiz));
+  }
+
+  public deleteQuiz(id: string): Observable<boolean> {
+    return this.deleteBasic(`/delete/${id}`);
+  }
 }
