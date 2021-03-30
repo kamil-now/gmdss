@@ -1,7 +1,12 @@
 <ng-container *ngIf="(quizList$ | async) != null; else loading">
   <ng-container *ngFor="let quiz of quizList$ | async">
     <mat-action-list>
-      <button mat-list-item (click)="editQuiz(quiz)">{{ quiz.title }}</button>
+      <div mat-list-item fxLayout="row">
+        <p>{{ quiz.title }}</p>
+        <button mat-button (click)="editQuiz(quiz)">edit</button>
+        <button mat-button (click)="deleteQuiz(quiz)">delete</button>
+      </div>
+      <mat-divider></mat-divider>
     </mat-action-list>
   </ng-container>
 </ng-container>

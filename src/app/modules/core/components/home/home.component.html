@@ -1,4 +1,4 @@
 <app-wrapper [stretch]="true">
-  <app-quiz-list #list></app-quiz-list>
-  <app-quiz-details (quizCreated)="list.refresh()"> </app-quiz-details>
+  <app-quiz-list #list (quizSelected)=details.initializeWith($event)></app-quiz-list>
+  <app-quiz-details #details (quizCreated)="list.refresh()"> </app-quiz-details>
 </app-wrapper>

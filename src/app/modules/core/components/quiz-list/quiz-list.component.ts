@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { cast } from 'src/app/shared/utils/utils';
 import { Quiz } from '../../models/quiz';
 import { QuizService } from '../../services/quiz.service';
 
@@ -11,6 +12,7 @@ import { QuizService } from '../../services/quiz.service';
 })
 export class QuizListComponent {
 
+  @Output() quizSelected: EventEmitter<Quiz> = new EventEmitter<Quiz>();
   quizList$!: Observable<Quiz[] | null>;
 
   constructor(
@@ -24,6 +26,13 @@ export class QuizListComponent {
   }
 
   editQuiz(quiz: Quiz): void {
-    // TODO
+    this.quizSelected.emit(quiz);
+  }
+
+  deleteQuiz(quiz: Quiz): void {
+    this._quizService.deleteQuiz(cast<string>(quiz._id))
+      .subscribe({
+        next: () => this.refresh()
+      });
   }
 }

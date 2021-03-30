@@ -1,3 +1,4 @@
+<button mat-button (click)="clear()">CLEAR</button>
 <form [formGroup]="quizForm" (ngSubmit)="onSubmit()" fxLayout="column">
   <mat-error *ngIf="invalid">
     {{ error ? error : "Provided data is invalid" }}
@@ -49,23 +50,9 @@
                           <mat-label>Answer text</mat-label>
                           <input matInput formControlName="text" />
                         </mat-form-field>
-                        <mat-checkbox
-                          (change)="
-                            changeIsAnswerCorrect(
-                              setindex,
-                              questionindex,
-                              answerindex,
-                              $event
-                            )
-                          "
-                        >
+                        <mat-checkbox formControlName="isCorrect">
                           Is correct
                         </mat-checkbox>
-                        <input
-                          id="input"
-                          type="hidden"
-                          formControlName="isCorrect"
-                        />
                         <button
                           mat-raised-button
                           type="button"
@@ -125,5 +112,7 @@
   </button>
 
   <mat-divider></mat-divider>
-  <button mat-raised-button color="primary" type="submit">Save</button>
+  <button mat-raised-button color="primary" type="submit">
+    {{ quizId ? "UPDATE" : "CREATE" }}
+  </button>
 </form>
