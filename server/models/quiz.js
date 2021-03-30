@@ -12,8 +12,10 @@ const QuizSchema = new mongoose.Schema({
       questions: [
         {
           text: String,
-          answers: [{ text: String }],
-          correctAnswerIndex: Number
+          answers: [{ 
+            text: String,
+            isCorrect: Boolean
+          }]
         }
       ]
     }
