@@ -23,7 +23,7 @@ import { QuizService } from './services/quiz.service';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'app',
     canActivate: [AuthGuard],
     children: [
       {
