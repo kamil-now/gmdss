@@ -29,6 +29,16 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this._activatedRoute.queryParams
+      .subscribe({
+        next: (params: Params) => {
+          if (params.data) {
+            const data = JSON.parse(params.data);
+            this._store.dispatch(new Login(data.data));
+          }
+          this._router.navigate(['/']);
+        }
+      });
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

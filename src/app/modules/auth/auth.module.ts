@@ -12,7 +12,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { LoginProxyComponent } from './components/login/login-proxy.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -26,12 +25,8 @@ const routes: Routes = [
     path: 'auth',
     children: [
       {
-        path: '',
-        component: LoginComponent
-      },
-      {
         path: 'login',
-        component: LoginProxyComponent
+        component: LoginComponent
       },
       {
         path: 'register',
@@ -44,7 +39,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     LoginComponent,
-    LoginProxyComponent,
     RegisterComponent,
   ],
   imports: [
