@@ -1,13 +1,11 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { cast, isDefined } from 'src/app/shared/utils/utils';
-import { AuthService } from './auth.service';
+import { cast } from 'src/app/shared/utils/utils';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private readonly _authService: AuthService) { }
-
   public intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
@@ -18,13 +16,14 @@ export class AuthInterceptor implements HttpInterceptor {
         'Accept': 'application/json'
       }
     });
-    if (isDefined(this._authService.authToken)) {
+    const token = localStorage.getItem(environment.authTokenKey);
+    if (token) {
       req = req.clone({
         setHeaders: {
-          Authorization: cast<string>(this._authService.authToken),
+          Authorization: cast<string>(token),
         }
       });
     }
-    return next.handle(req)
+    return next.handle(req);
   }
 }

@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule, Routes } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { LoginProxyComponent } from './components/login/login-proxy.component';
 import { LoginComponent } from './components/login/login.component';
@@ -16,6 +18,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { AuthService } from './services/auth.service';
+import { AuthEffects } from './store/effects/auth.effects';
+import { authReducer, AUTH_FEATURE_KEY } from './store/reducers/auth.reducer';
 
 const routes: Routes = [
   {
@@ -46,6 +50,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
+    EffectsModule.forFeature([AuthEffects]),
     SharedModule,
     FormsModule,
     ReactiveFormsModule,

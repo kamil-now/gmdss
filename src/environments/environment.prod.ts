@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
   apiUrl: '',
-  appName: 'gmdss'
+  appName: 'gmdss',
+  authTokenKey: 'id_token'
 };

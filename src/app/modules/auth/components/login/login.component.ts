@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.store';
+import { LoginData } from '../../models/login-data';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
+import { Login } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly _fb: FormBuilder,
     private readonly _router: Router,
-    private readonly _authService: AuthService
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _authService: AuthService,
+    private readonly _store: Store<AppState>
   ) {
   }
 
@@ -39,13 +45,7 @@ export class LoginComponent implements OnInit {
         };
         this._authService.loginUser(user)
           .subscribe({
-            next: (success: boolean) => {
-              if (success) {
-                this._router.navigate(['/']);
-              } else {
-                this.invalid = true;
-              }
-            }
+            next: (data: LoginData) => this._store.dispatch(new Login(data))
           });
       } catch (err) {
         this.error = err;
