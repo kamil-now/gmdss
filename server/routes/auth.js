@@ -6,6 +6,11 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('./../config/database');
 
+// Login with token
+router.post('/token', (req, res, next) => {
+  const decodedToken = jwt.decode(req.body.token)
+  tryLogin(res, decodedToken.user.username, decodedToken.user.password)
+});
 
 // Login with Google
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false })
@@ -21,21 +26,8 @@ router.get(
       if (!user) {
         return res.json({ success: false, msg: 'User not found' });
       }
-
-      if (err) throw err;
-      const token = jwt.sign({ user }, config.secret, {
-        expiresIn: 86400 // 1 day
-      });
-      data = {
-        success: true,
-        token: 'JWT ' + token,
-        user: {
-          id: user._id,
-          username: user.username,
-          email: user.email
-        }
-      }
-      res.redirect(`/login?data=${JSON.stringify(data)}`)
+      data = getLoginResponseData(user)
+      res.redirect(`/login?data=${JSON.stringify(data)}`, 307)
     });
   }
 )
@@ -63,43 +55,43 @@ router.post('/register', (req, res, next) => {
 
 // Authenticate
 router.post('/login', (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  User.getUserByUsername(username, (err, user) => {
-    if (err) throw err;
-    if (!user) {
-      return res.json({ success: false, msg: 'User not found' });
-    }
-
-    User.comparePassword(password, user.password, (err, isMatch) => {
-      if (err) throw err;
-      if (isMatch) {
-        const token = jwt.sign({ user }, config.secret, {
-          expiresIn: 86400
-        });
-
-        return res.json({
-          success: true,
-          data: {
-            token: 'JWT ' + token,
-            user: {
-              id: user._id,
-              username: user.username,
-              email: user.email
-            }
-          }
-        });
-      } else {
-        return res.json({ success: false, msg: 'Failed to login ' + (err ? err : '')});
-      }
-    });
-  });
+  tryLogin(res, req.body.username, req.body.password)
 });
 
 // Profile
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   res.json({ user: req.user });
 });
+
+function tryLogin(res, username, password) {
+  User.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return res.json({ success: false, msg: 'User not found' });
+    }
+    User.comparePassword(password, user.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch || password === user.password) {
+        return res.json(getLoginResponseData(user))
+      } else {
+        return res.json({ success: false, msg: 'Failed to login ' + (err ? err : '')})
+      }
+    });
+  });
+}
+
+function getLoginResponseData(user) {
+  const token = jwt.sign({ user }, config.secret, {
+    expiresIn: 86400
+  });
+
+  return {
+    success: true,
+    data: {
+      token: 'JWT ' + token,
+      user: user
+    }
+  }
+}
 
 module.exports = router
