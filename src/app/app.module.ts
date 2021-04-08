@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { metaReducers, reducers } from './app.store';
 import { AuthModule } from './modules/auth/auth.module';
-import { CoreModule } from './modules/core/core.module';
+import { QuizModule } from './modules/quiz/quiz.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { CoreModule } from './modules/core/core.module';
   ],
   imports: [
     AuthModule.forRoot(),
-    CoreModule.forRoot(),
+    QuizModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(),
     AppRoutingModule,

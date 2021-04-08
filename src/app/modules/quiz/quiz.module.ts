@@ -14,16 +14,20 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 import { QuizListComponent } from './components/quiz-list/quiz-list.component';
 import { QuizService } from './services/quiz.service';
+import { QuizEffects } from './state/quiz.effects';
+import { quizReducer, QUIZ_FEATURE_KEY } from './state/quiz.reducer';
 
 const routes: Routes = [
   {
-    path: 'app',
+    path: 'quiz',
     canActivate: [AuthGuard],
     children: [
       {
@@ -33,6 +37,7 @@ const routes: Routes = [
     ]
   }
 ];
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -42,6 +47,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    StoreModule.forFeature(QUIZ_FEATURE_KEY, quizReducer),
+    EffectsModule.forFeature([QuizEffects]),
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,10 +67,10 @@ const routes: Routes = [
     MatProgressBarModule
   ]
 })
-export class CoreModule {
-  static forRoot(): ModuleWithProviders<CoreModule> {
+export class QuizModule {
+  static forRoot(): ModuleWithProviders<QuizModule> {
     return {
-      ngModule: CoreModule,
+      ngModule: QuizModule,
       providers: [
         QuizService
       ]

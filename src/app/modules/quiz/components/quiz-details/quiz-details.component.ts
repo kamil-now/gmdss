@@ -1,19 +1,20 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/app.store';
 import { cast, isDefined } from 'src/app/shared/utils/utils';
 import { QuestionSet } from '../../models/question-set';
 import { Quiz } from '../../models/quiz';
-import { QuizService } from '../../services/quiz.service';
+import { QuizActions } from '../../state/quiz.actions';
+import { QuizSelectors } from '../../state/quiz.selectors';
 
 @Component({
   selector: 'app-quiz-details',
   templateUrl: './quiz-details.component.html',
   styleUrls: ['./quiz-details.component.scss']
 })
-export class QuizDetailsComponent {
-
-  @Output() quizCreated: EventEmitter<void> = new EventEmitter<void>();
+export class QuizDetailsComponent implements OnDestroy {
 
   get setsFormArray(): FormArray {
     return cast<FormArray>(this.quizForm.get('sets'));
@@ -26,15 +27,29 @@ export class QuizDetailsComponent {
 
   quizId?: string;
 
+  private _sub: Subscription = new Subscription();
   constructor(
     private readonly _fb: FormBuilder,
-    private readonly _quizService: QuizService
+    private readonly _store: Store<AppState>
   ) {
+    this._sub.add(
+      this._store.pipe(select(QuizSelectors.listSelected))
+        .subscribe(selected => {
+          if (selected) {
+            this.initializeWith(selected);
+          }
+        })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this._sub.unsubscribe();
   }
 
   clear(): void {
     this.quizId = undefined;
     this.quizForm = this.createQuizFormGroup('');
+    this._store.dispatch(QuizActions.clearSelectedQuiz());
   }
 
   initializeWith(quiz: Quiz): void {
@@ -119,18 +134,10 @@ export class QuizDetailsComponent {
           title: cast<string>(this.quizForm.get('title')?.value).trim(),
           sets: cast<QuestionSet[]>(this.quizForm.get('sets')?.value)
         };
-        (isDefined(quiz._id)
-          ? this._quizService.updateQuiz(quiz)
-          : this._quizService.createQuiz(quiz)
-        ).subscribe({
-          next: (success: boolean) => {
-            if (success) {
-              this.quizCreated.emit();
-            } else {
-              this.invalid = true;
-            }
-          }
-        });
+        isDefined(quiz._id)
+          ? this._store.dispatch(QuizActions.updateQuiz({ quiz, changes: quiz })) // TODO update only changed properties
+          : this._store.dispatch(QuizActions.createQuiz({ quiz }));
+
       } catch (err) {
         this.error = err;
         this.invalid = true;

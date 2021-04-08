@@ -15,15 +15,15 @@ export class QuizService extends ApiService {
     return this.get<Quiz[]>('/list');
   }
 
-  public createQuiz(quiz: Quiz): Observable<boolean> {
-    return this.postBasic('/create', JSON.stringify(quiz));
+  public createQuiz(quiz: Quiz): Observable<Quiz> {
+    return this.post<Quiz>('/create', JSON.stringify(quiz));
   }
 
-  public updateQuiz(quiz: Quiz): Observable<boolean> {
-    return this.putBasic('/update', JSON.stringify(quiz));
+  public updateQuiz(quiz: Quiz): Observable<Quiz> {
+    return this.put<Quiz>('/update', JSON.stringify(quiz));
   }
 
-  public deleteQuiz(id: string): Observable<boolean> {
-    return this.deleteBasic(`/delete/${id}`);
+  public deleteQuiz(id: string): Observable<string> {
+    return this.delete(`/delete/${id}`);
   }
 }
