@@ -1,11 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { EMPTY } from 'rxjs/internal/observable/empty';
-import { of } from 'rxjs/internal/observable/of';
-import { map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Response } from '../models/response';
-import { cast } from '../utils/utils';
 
 interface IHttpOptions {
   observe: 'body';
@@ -37,97 +32,32 @@ export abstract class ApiService {
 
   protected get<T = any>(name?: string, options?: IHttpOptions): Observable<T> {
     const requestOptions = options ? options : this.options;
-    return this.http.get<Response<T>>(this._formatUrl(name), requestOptions)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
-  }
-
-  protected getBasic(name?: string, options?: IHttpOptions): Observable<boolean> {
-    const requestOptions = options ? options : this.options;
-    return this.http.get<Response<void>>(this._formatUrl(name), requestOptions)
-      .pipe(
-        map(res => this._handleBasic(res))
-      );
+    return this.http.get<T>(this._formatUrl(name), requestOptions);
   }
 
   protected getWithCredentials<T = any>(name?: string): Observable<T> {
     const opt = this.options;
     opt.withCredentials = true;
-    return this.http.get<Response<T>>(this._formatUrl(name), opt)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
-  }
-
-  protected postBasic(name: string, body: string, options?: IHttpOptions): Observable<boolean> {
-    const requestOptions = options ? options : this.options;
-    return this.http.post<Response<void>>(this._formatUrl(name), body, requestOptions)
-      .pipe(
-        map(res => this._handleBasic(res))
-      );
+    return this.http.get<T>(this._formatUrl(name), opt);
   }
 
   protected post<T = any>(name: string, body: string, options?: IHttpOptions): Observable<T> {
     const requestOptions = options ? options : this.options;
-    return this.http.post<Response<T>>(this._formatUrl(name), body, requestOptions)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
+    return this.http.post<T>(this._formatUrl(name), body, requestOptions);
   }
 
   protected delete<T = any>(name: string, options?: IHttpOptions): Observable<T> {
-    return this.http.delete<Response<T>>(this._formatUrl(name), options ? options : this.options)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
-  }
-
-  protected deleteBasic(name: string, options?: IHttpOptions): Observable<boolean> {
-    const requestOptions = options ? options : this.options;
-    return this.http.delete<Response<void>>(this._formatUrl(name), requestOptions)
-      .pipe(
-        map(res => this._handleBasic(res))
-      );
+    return this.http.delete<T>(this._formatUrl(name), options ? options : this.options)
   }
 
   protected postWithCredentials<T = any>(name: string, body: string): Observable<T> {
     const opt = this.options;
     opt.withCredentials = true;
-    return this.http.post<Response<T>>(this._formatUrl(name), body, opt)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
+    return this.http.post<T>(this._formatUrl(name), body, opt);
   }
 
-  protected put<T = any>(name: string, body: string): Observable<T | boolean> {
-    return this.http.put<Response<T>>(this._formatUrl(name), body, this.options)
-      .pipe(
-        mergeMap(res => this._handleResponse<T>(res))
-      );
-  }
-
-  protected putBasic(name: string, body: string, options?: IHttpOptions): Observable<boolean> {
-    const requestOptions = options ? options : this.options;
-    return this.http.put<Response<void>>(this._formatUrl(name), body, requestOptions)
-      .pipe(
-        map(res => this._handleBasic(res))
-      );
-  }
-
-  private _handleResponse<T>(res: Response<T>): Observable<T> {
-    if (res.success) {
-      return of(cast<T>(res.data));
-    }
-    console.error(res.msg);
-    return EMPTY;
-  }
-
-  private _handleBasic(res: Response<void>): boolean {
-    if (!res.success) {
-      console.error(res.msg);
-    }
-    return res.success;
+  protected put<T = any>(name: string, body: string): Observable<T> {
+    return this.http.put<T>(this._formatUrl(name), body, this.options);
   }
 
   private _formatUrl(name?: string): string {

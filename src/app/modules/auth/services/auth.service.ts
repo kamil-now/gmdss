@@ -20,7 +20,7 @@ export class AuthService extends ApiService {
   }
 
   public loginWithGoogle(): Observable<boolean> {
-    return this.getBasic('/google');
+    return this.get('/google');
   }
 
   public loginWithToken(): Observable<LoginData> {
@@ -28,6 +28,6 @@ export class AuthService extends ApiService {
   }
 
   public registerUser(user: User): Observable<boolean> {
-    return this.postBasic('/register', JSON.stringify(user));
+    return this.post('/register', JSON.stringify(user));
   }
 }

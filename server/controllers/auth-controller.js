@@ -18,7 +18,7 @@ exports.loginWithGoogle = async (req, res) => {
   User.getUserByUsername(req.user.username, (err, user) => {
     if (err) throw err;
     if (!user) {
-      return res.json({ success: false, msg: 'User not found' })
+      return res.json(false)
     }
     data = getLoginResponseData(user)
     res.redirect(`/login?data=${JSON.stringify(data)}`, 307)
@@ -40,9 +40,9 @@ exports.register = async (req, res) => {
     let registered = await User.findById(newUser._id)
     console.log(registered)
     if (err || !registered) {
-      return res.json({ success: false, msg: 'Failed to register user ' + (err ? err : '') })
+      return res.json(false)
     }
-    return res.json({ success: true, msg: 'User registered' })
+    return res.json(true)
   })
 }
 
@@ -51,14 +51,14 @@ function tryLogin(res, username, password) {
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) {
-      return res.json({ success: false, msg: 'User not found' });
+      return res.json(true);
     }
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch || password === user.password) {
         return res.json(getLoginResponseData(user))
       } else {
-        return res.json({ success: false, msg: 'Failed to login ' + (err ? err : '') })
+        return res.json(false)
       }
     });
   });
@@ -70,10 +70,7 @@ function getLoginResponseData(user) {
   });
 
   return {
-    success: true,
-    data: {
-      token: 'JWT ' + token,
-      user: user
-    }
+    token: 'JWT ' + token,
+    user: user
   }
 }
