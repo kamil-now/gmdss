@@ -52,7 +52,21 @@ app.get('/', (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
+  res.sendFile(path.join(__dirname, './public/index.html'))
+});
+
+// Error handler
+app.use(function(err, req, res, next) {
+  if (!err) 
+    return next();
+
+  console.error(err)
+  
+  res.status(err.status || 500).end()
+});
+
+app.use(function(req, res) {
+  res.status(404).end()
 });
 
 module.exports = app;  
