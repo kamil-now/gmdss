@@ -2,14 +2,14 @@ const passport = require('passport')
 const express = require('express')
 const router = express.Router()
 
-const quiz_controller = require('../controllers/quiz-controller')
+const controller = require('../controllers/quiz-controller')
 
-router.get('/list', passport.authenticate('jwt'), quiz_controller.get_quiz_list)
+router.get('/list', passport.authenticate('jwt'), controller.list)
 
-router.post('/create', passport.authenticate('jwt'), quiz_controller.create_quiz)
+router.post('/create', passport.authenticate('jwt'), controller.create)
 
-router.put('/update', passport.authenticate('jwt'), quiz_controller.update_quiz)
+router.put('/update', passport.authenticate('jwt'), controller.update)
 
-router.delete('/delete/:id', passport.authenticate('jwt'), quiz_controller.delete_quiz)
+router.delete('/delete/:id', passport.authenticate('jwt'), controller.delete)
 
 module.exports = router
