@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -21,6 +22,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 import { QuizListComponent } from './components/quiz-list/quiz-list.component';
+import { QuizTestComponent } from './components/quiz-test/quiz-test.component';
 import { QuizService } from './services/quiz.service';
 import { QuizEffects } from './state/quiz.effects';
 import { quizReducer, QUIZ_FEATURE_KEY } from './state/quiz.reducer';
@@ -42,7 +44,8 @@ const routes: Routes = [
   declarations: [
     HomeComponent,
     QuizDetailsComponent,
-    QuizListComponent
+    QuizListComponent,
+    QuizTestComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +67,8 @@ const routes: Routes = [
     MatButtonModule,
     MatExpansionModule,
     MatCheckboxModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule
   ]
 })
 export class QuizModule {

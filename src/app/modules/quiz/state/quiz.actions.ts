@@ -1,5 +1,6 @@
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
+import { QuestionSet } from '../models/question-set';
 import { Quiz } from '../models/quiz';
 
 // TODO loading actions & list pagination
@@ -18,7 +19,8 @@ export enum QuizActionTypes {
   UpdateQuizFailure = '[Quiz Effect] Update Quiz Failure',
   DeleteQuiz = '[Quiz Details Component] Delete Quiz',
   DeleteQuizSuccess = '[Quiz Effect] Delete Quiz Success',
-  DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure'
+  DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure',
+  SelectQuestionSet = '[Quiz Test Component] Question set selected',
 }
 
 export class QuizActions {
@@ -36,4 +38,5 @@ export class QuizActions {
   static deleteQuiz = createAction(QuizActionTypes.DeleteQuiz, props<{ id: string }>());
   static deleteQuizSuccess = createAction(QuizActionTypes.DeleteQuizSuccess, props<{ id: string }>());
   static deleteQuizFailure = createAction(QuizActionTypes.DeleteQuizFailure, props<{ error: any }>());
+  static selectQuestionSet = createAction(QuizActionTypes.SelectQuestionSet, props<{ set: QuestionSet }>());
 }

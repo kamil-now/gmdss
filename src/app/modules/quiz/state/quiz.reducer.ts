@@ -1,12 +1,14 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { cast } from 'src/app/shared/utils/utils';
+import { QuestionSet } from '../models/question-set';
 import { Quiz } from '../models/quiz';
 import { QuizActions } from './quiz.actions';
 
 export const QUIZ_FEATURE_KEY = 'quiz';
 export interface IQuizState extends EntityState<Quiz> {
   selectedQuiz?: Quiz;
+  selectedSet?: QuestionSet;
   error: any;
 }
 
@@ -24,6 +26,12 @@ export const quizReducer = createReducer(
     return {
       ...state,
       selectedQuiz: action.quiz,
+    };
+  }),
+  on(QuizActions.selectQuestionSet, (state, action) => {
+    return {
+      ...state,
+      selectedSet: action.set,
     };
   }),
   on(QuizActions.clearQuizData, (state, action) => {
