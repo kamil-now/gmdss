@@ -10,8 +10,8 @@ export class QuizSelectors {
     quizSelectors.selectAll
   );
 
-  static listSelected = createSelector(
+  static quizSelected = createSelector(
     QuizSelectors.state,
-    state => state.selected
+    state => state.selectedQuiz
   );
 }

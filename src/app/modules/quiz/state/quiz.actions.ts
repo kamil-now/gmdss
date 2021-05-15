@@ -5,8 +5,8 @@ import { Quiz } from '../models/quiz';
 // TODO loading actions & list pagination
 
 export enum QuizActionTypes {
-  SelectQuiz = '[Quiz List Component] Select Quiz',
-  ClearSelectedQuiz = '[Quiz Details Component] Clear Selected Quiz',
+  SelectQuiz = '[Quiz List Component] Quiz selected',
+  ClearQuizData = '[Quiz Details Component] Clear Quiz Data',
   LoadQuizList = '[Quiz List Component] Load Quiz List',
   LoadQuizListSuccess = '[Quiz Effect] Load Quiz List Success',
   LoadQuizListFailure = '[Quiz Effect] Load Quiz List Failure',
@@ -23,7 +23,7 @@ export enum QuizActionTypes {
 
 export class QuizActions {
   static selectQuiz = createAction(QuizActionTypes.SelectQuiz, props<{ quiz: Quiz }>());
-  static clearSelectedQuiz = createAction(QuizActionTypes.ClearSelectedQuiz);
+  static clearQuizData = createAction(QuizActionTypes.ClearQuizData);
   static loadQuizList = createAction(QuizActionTypes.LoadQuizList);
   static loadQuizListSuccess = createAction(QuizActionTypes.LoadQuizListSuccess, props<{ list: Quiz[] }>());
   static loadQuizListFailure = createAction(QuizActionTypes.LoadQuizListFailure, props<{ error: any }>());

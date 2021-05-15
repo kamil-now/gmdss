@@ -6,7 +6,7 @@ import { QuizActions } from './quiz.actions';
 
 export const QUIZ_FEATURE_KEY = 'quiz';
 export interface IQuizState extends EntityState<Quiz> {
-  selected?: Quiz;
+  selectedQuiz?: Quiz;
   error: any;
 }
 
@@ -23,13 +23,13 @@ export const quizReducer = createReducer(
   on(QuizActions.selectQuiz, (state, action) => {
     return {
       ...state,
-      selected: action.quiz,
+      selectedQuiz: action.quiz,
     };
   }),
-  on(QuizActions.clearSelectedQuiz, (state, action) => {
+  on(QuizActions.clearQuizData, (state, action) => {
     return {
       ...state,
-      selected: undefined
+      selectedQuiz: undefined
     };
   }),
 

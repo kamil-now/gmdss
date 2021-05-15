@@ -33,7 +33,7 @@ export class QuizDetailsComponent implements OnDestroy {
     private readonly _store: Store<AppState>
   ) {
     this._sub.add(
-      this._store.pipe(select(QuizSelectors.listSelected))
+      this._store.pipe(select(QuizSelectors.quizSelected))
         .subscribe(selected => {
           if (selected) {
             this.initializeWith(selected);
@@ -49,7 +49,7 @@ export class QuizDetailsComponent implements OnDestroy {
   clear(): void {
     this.quizId = undefined;
     this.quizForm = this.createQuizFormGroup('');
-    this._store.dispatch(QuizActions.clearSelectedQuiz());
+    this._store.dispatch(QuizActions.clearQuizData());
   }
 
   initializeWith(quiz: Quiz): void {
