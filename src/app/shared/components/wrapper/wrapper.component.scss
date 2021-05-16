@@ -1,5 +1,5 @@
 $smallWidth: 400px;
-$fullWidth: 90vw;
+$fullWidth: 900px;
 
 @keyframes fadeIn {
   from {
@@ -40,12 +40,12 @@ $fullWidth: 90vw;
   animation-fill-mode: forwards;
 }
 
-@media only screen and (max-width: 400px) {
-  .flex-container {
-    width: 100%;
+@media only screen and (max-width: 960px) {
+  .content-wrapper {
+    width: 95vw !important;
   }
   .title-wrapper {
-    width: 100%;
+    width: 95vw !important;
   }
 }
 
@@ -67,7 +67,7 @@ $fullWidth: 90vw;
   align-self: center;
   width: $fullWidth;
   * {
-    width: 100%;
+    width: $fullWidth;
   }
 }
 
