@@ -17,6 +17,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
@@ -68,7 +69,7 @@ const routes: Routes = [
     MatExpansionModule,
     MatCheckboxModule,
     MatProgressBarModule,
-    MatRadioModule
+    InfiniteScrollModule
   ]
 })
 export class QuizModule {
