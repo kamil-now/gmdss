@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "cross-env NODE_ENV=dev nodemon server"
+    "dev": "cross-env NODE_ENV=dev nodemon server",
+    "heroku-postbuild": "ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
