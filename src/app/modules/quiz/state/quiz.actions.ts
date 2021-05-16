@@ -21,6 +21,7 @@ export enum QuizActionTypes {
   DeleteQuizSuccess = '[Quiz Effect] Delete Quiz Success',
   DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure',
   SelectQuestionSet = '[Quiz Test Component] Question set selected',
+  UnselectQuestionSet = '[Quiz Test Component] Question set unselected',
 }
 
 export class QuizActions {
@@ -39,4 +40,5 @@ export class QuizActions {
   static deleteQuizSuccess = createAction(QuizActionTypes.DeleteQuizSuccess, props<{ id: string }>());
   static deleteQuizFailure = createAction(QuizActionTypes.DeleteQuizFailure, props<{ error: any }>());
   static selectQuestionSet = createAction(QuizActionTypes.SelectQuestionSet, props<{ set: QuestionSet }>());
+  static unselectQuestionSet = createAction(QuizActionTypes.UnselectQuestionSet, props<{ set: QuestionSet }>());
 }

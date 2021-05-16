@@ -1,8 +1,31 @@
 mat-radio-group {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   margin: 1rem;
   mat-radio-button {
     margin: 0.5rem 0;
   }
+}
+
+.stickyHeaderContainer {
+  margin: 0.5rem 0;
+  button {
+    margin: 0 0.5rem 0 0;
+  }
+  .answersInfoContainer{
+    margin: 0.5rem 0;
+    mat-chip{
+      margin: 0 0.5rem 0 0;
+    }
+  }
+}
+
+
+
+.correctAnswer {
+  color: green;
+}
+
+.incorrectAnswer {
+  color: red;
 }

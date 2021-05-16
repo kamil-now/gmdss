@@ -17,6 +17,6 @@ export class QuizSelectors {
 
   static setSelected = createSelector(
     QuizSelectors.state,
-    state => state.selectedSet
+    state => state.selectedSets
   );
 }

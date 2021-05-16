@@ -8,7 +8,7 @@ import { QuizActions } from './quiz.actions';
 export const QUIZ_FEATURE_KEY = 'quiz';
 export interface IQuizState extends EntityState<Quiz> {
   selectedQuiz?: Quiz;
-  selectedSet?: QuestionSet;
+  selectedSets?: QuestionSet[];
   error: any;
 }
 
@@ -31,7 +31,19 @@ export const quizReducer = createReducer(
   on(QuizActions.selectQuestionSet, (state, action) => {
     return {
       ...state,
-      selectedSet: action.set,
+      selectedSets: state.selectedSets ? [...state.selectedSets, action.set] : [action.set],
+    };
+  }),
+  on(QuizActions.unselectQuestionSet, (state, action) => {
+    return {
+      ...state,
+      selectedSets: state.selectedSets ? [...state.selectedSets.filter(x => x !== action.set)] : [],
+    };
+  }),
+  on(QuizActions.selectQuestionSet, (state, action) => {
+    return {
+      ...state,
+      selectedSets: state.selectedSets ? [...state.selectedSets, action.set] : [action.set],
     };
   }),
   on(QuizActions.clearQuizData, (state, action) => {

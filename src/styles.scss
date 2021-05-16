@@ -1,16 +1,15 @@
-@import './theme.scss';
+@import "./theme.scss";
 
 html {
   margin: 0;
-
 }
 body {
   margin: 0;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
 @for $index from 1 through 6 {
-  h#{$index}{
+  h#{$index} {
     margin: 0 !important;
   }
 }
@@ -60,10 +59,16 @@ a:hover {
   cursor: pointer;
 }
 
-
 i.fa {
   padding: 0 0.5rem;
 }
 mat-icon {
   padding: 0 0.5rem;
+}
+.mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+.mat-radio-label {
+  white-space: normal !important;
 }

@@ -1,17 +1,69 @@
-<mat-action-list>
+<div #questionSets>
   <ng-container *ngFor="let set of questionSets$ | async; let lastItem = last">
-    <button mat-list-item (click)="selectSet(set)">{{ set.title }}</button>
-    <mat-divider *ngIf="lastItem"></mat-divider>
+    <mat-checkbox (change)="selectSet(set, $event.checked)">{{
+      set.title
+    }}</mat-checkbox>
+    <mat-divider></mat-divider>
   </ng-container>
-  <ng-container *ngFor="let question of selectedSetQuestions$ | async">
+</div>
+<div
+  class="stickyHeaderContainer"
+  fxLayout="row"
+  fxLayoutAlign="end center"
+  appStickySection
+  stickySectionTopMargin="10px"
+>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="scrollToElement(questionSets)"
+      >
+        up
+      </button>
+      <button mat-raised-button color="primary" (click)="clear()">clear</button>
+      <button mat-raised-button color="primary" (click)="randomize()">
+        randomize
+      </button>
+      <button mat-raised-button color="primary" (click)="checkAnswers()">
+        check
+      </button>
+    </div>
+    <div
+      class="answersInfoContainer"
+      *ngIf="showAnswers"
+      fxLayout="row"
+      fxLayoutAlign="end center"
+    >
+      <mat-chip-list>
+        <mat-chip
+          >Correct answers: {{ correctAnswers }} /{{
+            allQuestionsNumber
+          }}</mat-chip
+        ></mat-chip-list
+      >
+    </div>
+  </div>
+</div>
+<div class="questionList" infinite-scroll (scrolled)="displayNextQuestions()">
+  <ng-container *ngFor="let question of displayedQuestions">
     <mat-label>{{ question.text }}</mat-label>
     <mat-radio-group aria-label="Select an option" class="radio-group">
       <ng-container *ngFor="let answer of question.answers">
-        <mat-radio-button value="0">{{
-          answer.text
-        }}</mat-radio-button>
+        <div fxLayout="row">
+          <mat-radio-button [value]="answer" (change)="answerChecked()">
+            <mat-label
+              [ngClass]="{
+                correctAnswer: answer.isCorrect && showAnswers,
+                incorrectAnswer: !answer.isCorrect && showAnswers
+              }"
+              >{{ answer.text }}</mat-label
+            >
+          </mat-radio-button>
+        </div>
       </ng-container>
     </mat-radio-group>
     <mat-divider></mat-divider>
   </ng-container>
-</mat-action-list>
+</div>
