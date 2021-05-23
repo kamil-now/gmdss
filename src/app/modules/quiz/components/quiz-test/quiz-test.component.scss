@@ -29,3 +29,28 @@ mat-radio-group {
 .incorrectAnswer {
   color: red;
 }
+
+.floatingButton {
+  position: fixed;
+  width: 3rem;
+  height: 3rem;
+  bottom: 1rem;
+  right: 1rem;
+  border-radius: 2rem;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  mat-icon {
+    font-size: 2rem;
+    height: auto;
+    width: auto;
+  }
+}
+
+.upButton {
+  @extend .floatingButton;
+}
+
+.downButton {
+  @extend .floatingButton;
+  right: 5rem;
+}

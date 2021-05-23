@@ -1,4 +1,20 @@
 <div #top></div>
+<button
+  class="upButton"
+  mat-icon-button
+  color="primary"
+  (click)="scrollToElement(top)"
+>
+  <mat-icon [inline]="true">arrow_upward</mat-icon>
+</button>
+<button
+  class="downButton"
+  mat-icon-button
+  color="primary"
+  (click)="scrollToElement(bottom)"
+>
+  <mat-icon [inline]="true">arrow_downward</mat-icon>
+</button>
 <div
   class="stickyHeaderContainer"
   fxLayout="column"
@@ -7,13 +23,6 @@
   stickySectionTopMargin="10px"
 >
   <div class="buttonsContainer" fxLayout="row wrap" fxLayoutAlign="end center">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="scrollToElement(top)"
-    >
-      up
-    </button>
     <button mat-raised-button color="primary" (click)="clear()">clear</button>
     <button mat-raised-button color="primary" (click)="randomize()">
       randomize
@@ -56,3 +65,4 @@
     <mat-divider></mat-divider>
   </ng-container>
 </div>
+<div #bottom></div>
