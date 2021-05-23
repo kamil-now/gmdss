@@ -5,7 +5,14 @@
         <mat-checkbox (change)="selectQuiz(quiz, $event.checked)">
           {{ quiz.title }}
         </mat-checkbox>
-        <!-- <button mat-raised-button (click)="editQuiz(quiz)">edit</button> -->
+        <ng-container *ngIf="quiz.isEditable">
+          <button mat-icon-button (click)="editQuiz(quiz)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteQuiz(quiz)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </ng-container>
         <mat-divider></mat-divider>
       </div>
     </ng-container>

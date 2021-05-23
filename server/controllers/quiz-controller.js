@@ -7,10 +7,12 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res) => {
+  console.log(req.body)
   const created = await Quiz.create(
     {
       _id: mongoose.Types.ObjectId(),
       title: req.body.title,
+      isEditable: req.body.isEditable,
       questions: req.body.questions
     }
   )

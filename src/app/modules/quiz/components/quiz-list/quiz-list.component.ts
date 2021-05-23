@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.store';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Quiz } from '../../models/quiz';
 import { QuizActions } from '../../state/quiz.actions';
 import { QuizSelectors } from '../../state/quiz.selectors';
@@ -14,6 +16,7 @@ export class QuizListComponent {
   quizList$ = this._store.pipe(select(QuizSelectors.selectAllQuizes));
 
   constructor(
+    private readonly _dialog: MatDialog,
     private readonly _store: Store<AppState>
   ) {
     this._store.dispatch(QuizActions.loadQuizList());
@@ -29,7 +32,20 @@ export class QuizListComponent {
 
   deleteQuiz(quiz: Quiz): void {
     if (quiz._id) {
-      this._store.dispatch(QuizActions.deleteQuiz({ id: quiz._id }));
+      const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: 'DELETE QUIZ',
+          message: `Are you sure you want to delete ${quiz.title}?`
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (dialogResult === true && quiz._id) {
+          this._store.dispatch(QuizActions.deleteQuiz({ id: quiz._id }));
+        }
+      });
+    } else {
+      // TODO
     }
   }
 }

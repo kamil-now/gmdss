@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.store';
@@ -30,7 +31,8 @@ export class QuizDetailsComponent implements OnDestroy {
   private _sub: Subscription = new Subscription();
   constructor(
     private readonly _fb: FormBuilder,
-    private readonly _store: Store<AppState>
+    private readonly _store: Store<AppState>,
+    private readonly _dialogRef: MatDialogRef<QuizDetailsComponent>
   ) {
     this._sub.add(
       this._store.pipe(select(QuizSelectors.quizEditing))
@@ -112,16 +114,22 @@ export class QuizDetailsComponent implements OnDestroy {
         const quiz: Quiz = {
           _id: this.quizId,
           title: cast<string>(this.quizForm.get('title')?.value).trim(),
+          isEditable: true,
           questions: cast<Question[]>(this.quizForm.get('questions')?.value)
         };
         isDefined(quiz._id)
           ? this._store.dispatch(QuizActions.updateQuiz({ quiz, changes: quiz })) // TODO update only changed properties
           : this._store.dispatch(QuizActions.createQuiz({ quiz }));
-
+        this.close();
       } catch (err) {
         this.error = err;
         this.invalid = true;
       }
     }
+  }
+
+  close(): void {
+    this._store.dispatch(QuizActions.finishQuizEditing());
+    this._dialogRef.close();
   }
 }

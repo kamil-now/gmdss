@@ -23,13 +23,15 @@ export enum QuizActionTypes {
   DeleteQuizSuccess = '[Quiz Effect] Delete Quiz Success',
   DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure',
   LoadQuizTestQuestions = '[Quiz Test Component] Loaded quiz questions',
-  RandomizeQuizTestQuestions = '[Quiz Test Component] Randomize quiz questions'
+  RandomizeQuizTestQuestions = '[Quiz Test Component] Randomize quiz questions',
+  FinishQuizEditing = '[Quiz Details Component] Finish Quiz Editing',
 }
 
 export class QuizActions {
   static selectQuiz = createAction(QuizActionTypes.SelectQuiz, props<{ quiz: Quiz }>());
   static unselectQuiz = createAction(QuizActionTypes.UnselectQuiz, props<{ quiz: Quiz }>());
   static editQuiz = createAction(QuizActionTypes.EditQuiz, props<{ quiz: Quiz }>());
+  static finishQuizEditing = createAction(QuizActionTypes.FinishQuizEditing);
   static clearQuizData = createAction(QuizActionTypes.ClearQuizData);
   static loadQuizList = createAction(QuizActionTypes.LoadQuizList);
   static loadQuizListSuccess = createAction(QuizActionTypes.LoadQuizListSuccess, props<{ list: Quiz[] }>());

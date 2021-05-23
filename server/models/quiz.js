@@ -6,6 +6,9 @@ const QuizSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isEditable: {
+    type: Boolean,
+  },
   questions: [
     {
       text: String,

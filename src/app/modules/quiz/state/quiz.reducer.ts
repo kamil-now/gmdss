@@ -1,10 +1,10 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import * as _ from 'lodash';
 import { cast } from 'src/app/shared/utils/utils';
 import { Question } from '../models/question';
 import { Quiz } from '../models/quiz';
 import { QuizActions } from './quiz.actions';
-import * as _ from 'lodash';
 
 export const QUIZ_FEATURE_KEY = 'quiz';
 export interface IQuizState extends EntityState<Quiz> {
@@ -58,12 +58,18 @@ export const quizReducer = createReducer(
     if (!state.quizTestQuestions) {
       return state;
     }
-    const questions =  _.cloneDeep(state.quizTestQuestions);
+    const questions = _.cloneDeep(state.quizTestQuestions);
     questions.sort(() => Math.random() - 0.5);
     questions.forEach(question => question.answers.sort(() => Math.random() - 0.5));
     return {
       ...state,
       quizTestQuestions: questions
+    };
+  }),
+  on(QuizActions.finishQuizEditing, (state, __) => {
+    return {
+      ...state,
+      editingQuiz: undefined
     };
   }),
   on(QuizActions.loadQuizListSuccess, (state, action) => adapter.setAll(action.list, state)),
