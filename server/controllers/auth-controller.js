@@ -21,7 +21,7 @@ exports.loginWithGoogle = async (req, res) => {
       return res.json(false)
     }
     data = getLoginResponseData(user)
-    res.redirect(`/login?data=${JSON.stringify(data)}`, 307)
+    res.redirect(`/auth/login?data=${JSON.stringify(data)}`, 307)
   })
 }
 

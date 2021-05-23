@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         next: (params: Params) => {
           if (params.data) {
             const data = JSON.parse(params.data);
-            this._store.dispatch(new Login(data.data));
+            this._store.dispatch(new Login(data));
           }
           this._router.navigate(['/']);
         }
