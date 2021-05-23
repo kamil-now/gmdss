@@ -1,10 +1,7 @@
 import { Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { MatRadioButton } from '@angular/material/radio';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/app.store';
 import { Question } from '../../models/question';
 import { QuizActions } from '../../state/quiz.actions';
@@ -19,15 +16,12 @@ export class QuizTestComponent implements OnDestroy {
 
   @ViewChildren(MatRadioButton) radioButtons?: QueryList<MatRadioButton>;
 
-  get selectedQuizQuestions$(): Observable<Question[]> {
-    return this._store.pipe(select(QuizSelectors.quizTestQuestions), map(questions => questions ? questions : []));
-  }
-
   displayedQuestions: Question[] = [];
   showAnswers = false;
   correctAnswers = 0;
   allQuestionsNumber = 0;
 
+  private _allQuestions: Question[] = [];
   private readonly _pageSize = 20;
 
   private _sub: Subscription = new Subscription();
@@ -51,10 +45,10 @@ export class QuizTestComponent implements OnDestroy {
     this._sub.add(
       this._store.pipe(select(QuizSelectors.quizTestQuestions))
         .subscribe(questions => {
+          this._allQuestions = [...questions ? questions : []];
+          this.displayedQuestions = [...questions ? questions.slice(0, this._pageSize) : []];
           this.allQuestionsNumber = questions ? questions.length : 0;
-          this.displayedQuestions = questions ? questions.slice(0, this._pageSize) : [];
-        }
-        )
+        })
     );
   }
 
@@ -64,14 +58,7 @@ export class QuizTestComponent implements OnDestroy {
 
   displayNextQuestions(): void {
     const sum = this.displayedQuestions.length;
-    this.selectedQuizQuestions$.pipe(
-      map(x => x.slice(sum, sum + this._pageSize)),
-      first()
-    ).subscribe(questions => {
-      questions.forEach(question =>
-        this.displayedQuestions.push(question)
-      );
-    });
+    this.displayedQuestions.push(...this._allQuestions.slice(sum, sum + this._pageSize));
   }
 
   checkAnswers(): void {
@@ -89,7 +76,7 @@ export class QuizTestComponent implements OnDestroy {
   }
 
   randomize(): void {
-    this.displayedQuestions.sort(() => Math.random() - 0.5);
+    this._store.dispatch(QuizActions.randomizeQuizTestQuestions());
   }
 
   answerChecked(): void {

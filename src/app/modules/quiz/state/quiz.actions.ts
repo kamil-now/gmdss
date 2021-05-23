@@ -22,7 +22,8 @@ export enum QuizActionTypes {
   DeleteQuiz = '[Quiz Details Component] Delete Quiz',
   DeleteQuizSuccess = '[Quiz Effect] Delete Quiz Success',
   DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure',
-  LoadQuizTestQuestions = '[Quiz Test Component] Loaded quiz questions'
+  LoadQuizTestQuestions = '[Quiz Test Component] Loaded quiz questions',
+  RandomizeQuizTestQuestions = '[Quiz Test Component] Randomize quiz questions'
 }
 
 export class QuizActions {
@@ -43,4 +44,5 @@ export class QuizActions {
   static deleteQuizSuccess = createAction(QuizActionTypes.DeleteQuizSuccess, props<{ id: string }>());
   static deleteQuizFailure = createAction(QuizActionTypes.DeleteQuizFailure, props<{ error: any }>());
   static loadQuizTestQuestions = createAction(QuizActionTypes.LoadQuizTestQuestions, props<{ questions: Question[] }>());
+  static randomizeQuizTestQuestions = createAction(QuizActionTypes.RandomizeQuizTestQuestions);
 }
