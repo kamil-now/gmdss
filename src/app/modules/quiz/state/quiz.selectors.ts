@@ -12,11 +12,16 @@ export class QuizSelectors {
 
   static quizSelected = createSelector(
     QuizSelectors.state,
-    state => state.selectedQuiz
+    state => state.quizListSelected
   );
 
-  static setSelected = createSelector(
+  static quizTestQuestions = createSelector(
     QuizSelectors.state,
-    state => state.selectedSets
+    state => state.quizTestQuestions
+  );
+
+  static quizEditing = createSelector(
+    QuizSelectors.state,
+    state => state.editingQuiz
   );
 }

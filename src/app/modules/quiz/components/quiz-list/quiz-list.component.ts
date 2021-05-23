@@ -19,8 +19,12 @@ export class QuizListComponent {
     this._store.dispatch(QuizActions.loadQuizList());
   }
 
+  selectQuiz(quiz: Quiz, selected: boolean): void {
+    this._store.dispatch(selected ? QuizActions.selectQuiz({ quiz }) : QuizActions.unselectQuiz({ quiz }));
+  }
+
   editQuiz(quiz: Quiz): void {
-    this._store.dispatch(QuizActions.selectQuiz({ quiz }));
+    this._store.dispatch(QuizActions.editQuiz({ quiz }));
   }
 
   deleteQuiz(quiz: Quiz): void {

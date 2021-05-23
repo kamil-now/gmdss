@@ -1,49 +1,38 @@
-<div #questionSets>
-  <ng-container *ngFor="let set of questionSets$ | async; let lastItem = last">
-    <mat-checkbox (change)="selectSet(set, $event.checked)">{{
-      set.title
-    }}</mat-checkbox>
-    <mat-divider></mat-divider>
-  </ng-container>
-</div>
+<div #top></div>
 <div
   class="stickyHeaderContainer"
-  fxLayout="row"
-  fxLayoutAlign="end center"
+  fxLayout="column"
+  fxLayoutAlign="end end"
   appStickySection
   stickySectionTopMargin="10px"
 >
-  <div fxLayout="column">
-    <div fxLayout="row" fxLayoutAlign="end center">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="scrollToElement(questionSets)"
-      >
-        up
-      </button>
-      <button mat-raised-button color="primary" (click)="clear()">clear</button>
-      <button mat-raised-button color="primary" (click)="randomize()">
-        randomize
-      </button>
-      <button mat-raised-button color="primary" (click)="checkAnswers()">
-        check
-      </button>
-    </div>
-    <div
-      class="answersInfoContainer"
-      *ngIf="showAnswers"
-      fxLayout="row"
-      fxLayoutAlign="end center"
+  <div class="buttonsContainer" fxLayout="row wrap" fxLayoutAlign="end center">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="scrollToElement(top)"
     >
-      <mat-chip-list>
-        <mat-chip
-          >Correct answers: {{ correctAnswers }} /{{
-            allQuestionsNumber
-          }}</mat-chip
-        ></mat-chip-list
-      >
-    </div>
+      up
+    </button>
+    <button mat-raised-button color="primary" (click)="clear()">clear</button>
+    <button mat-raised-button color="primary" (click)="randomize()">
+      randomize
+    </button>
+    <button mat-raised-button color="primary" (click)="checkAnswers()">
+      check
+    </button>
+  </div>
+  <div
+    class="answersInfoContainer"
+    *ngIf="showAnswers"
+    fxLayout="row"
+    fxLayoutAlign="end center"
+  >
+    <mat-chip-list>
+      <mat-chip>
+        Correct answers: {{ correctAnswers }} / {{ allQuestionsNumber }}
+      </mat-chip>
+    </mat-chip-list>
   </div>
 </div>
 <div class="questionList" infinite-scroll (scrolled)="displayNextQuestions()">

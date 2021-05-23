@@ -1,15 +1,16 @@
-<ng-container *ngIf="(quizList$ | async) != null; else loading">
-  <ng-container *ngFor="let quiz of quizList$ | async">
-    <mat-action-list>
-      <div mat-list-item fxLayout="row">
-        <p>{{ quiz.title }}</p>
-        <button mat-button (click)="editQuiz(quiz)">edit</button>
-        <button mat-button (click)="deleteQuiz(quiz)">delete</button>
+<div #quizList>
+  <ng-container *ngIf="(quizList$ | async) != null; else loading">
+    <ng-container *ngFor="let quiz of quizList$ | async">
+      <div fxLayout="row wrap" fxLayoutAlign="start center">
+        <mat-checkbox (change)="selectQuiz(quiz, $event.checked)">
+          {{ quiz.title }}
+        </mat-checkbox>
+        <!-- <button mat-raised-button (click)="editQuiz(quiz)">edit</button> -->
+        <mat-divider></mat-divider>
       </div>
-      <mat-divider></mat-divider>
-    </mat-action-list>
+    </ng-container>
   </ng-container>
-</ng-container>
+</div>
 <ng-template #loading>
   <mat-progress-bar mode="indeterminate"> </mat-progress-bar>
 </ng-template>

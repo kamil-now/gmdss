@@ -1,14 +1,15 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { cast } from 'src/app/shared/utils/utils';
-import { QuestionSet } from '../models/question-set';
+import { Question } from '../models/question';
 import { Quiz } from '../models/quiz';
 import { QuizActions } from './quiz.actions';
 
 export const QUIZ_FEATURE_KEY = 'quiz';
 export interface IQuizState extends EntityState<Quiz> {
-  selectedQuiz?: Quiz;
-  selectedSets?: QuestionSet[];
+  quizListSelected?: Quiz[];
+  editingQuiz?: Quiz;
+  quizTestQuestions?: Question[];
   error: any;
 }
 
@@ -25,34 +26,33 @@ export const quizReducer = createReducer(
   on(QuizActions.selectQuiz, (state, action) => {
     return {
       ...state,
-      selectedQuiz: action.quiz,
+      quizListSelected: state.quizListSelected ? [...state.quizListSelected, action.quiz] : [action.quiz]
     };
   }),
-  on(QuizActions.selectQuestionSet, (state, action) => {
+  on(QuizActions.unselectQuiz, (state, action) => {
     return {
       ...state,
-      selectedSets: state.selectedSets ? [...state.selectedSets, action.set] : [action.set],
+      quizListSelected: state.quizListSelected ? [...state.quizListSelected.filter(x => x !== action.quiz)] : [],
     };
   }),
-  on(QuizActions.unselectQuestionSet, (state, action) => {
+  on(QuizActions.editQuiz, (state, action) => {
     return {
       ...state,
-      selectedSets: state.selectedSets ? [...state.selectedSets.filter(x => x !== action.set)] : [],
-    };
-  }),
-  on(QuizActions.selectQuestionSet, (state, action) => {
-    return {
-      ...state,
-      selectedSets: state.selectedSets ? [...state.selectedSets, action.set] : [action.set],
+      editingQuiz: action.quiz
     };
   }),
   on(QuizActions.clearQuizData, (state, action) => {
     return {
       ...state,
-      selectedQuiz: undefined
+      quizListSelected: undefined
     };
   }),
-
+  on(QuizActions.loadQuizTestQuestions, (state, action) => {
+    return {
+      ...state,
+      quizTestQuestions: action.questions
+    };
+  }),
   on(QuizActions.loadQuizListSuccess, (state, action) => adapter.setAll(action.list, state)),
   on(QuizActions.createQuizSuccess, (state, action) => adapter.addOne(action.quiz, state)),
   on(QuizActions.updateQuizSuccess, (state, action) => adapter.updateOne(action.quiz, state)),

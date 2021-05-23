@@ -1,12 +1,14 @@
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
-import { QuestionSet } from '../models/question-set';
+import { Question } from '../models/question';
 import { Quiz } from '../models/quiz';
 
 // TODO loading actions & list pagination
 
 export enum QuizActionTypes {
   SelectQuiz = '[Quiz List Component] Quiz selected',
+  UnselectQuiz = '[Quiz List Component] Quiz unselected',
+  EditQuiz = '[Quiz List Component] Quiz edit',
   ClearQuizData = '[Quiz Details Component] Clear Quiz Data',
   LoadQuizList = '[Quiz List Component] Load Quiz List',
   LoadQuizListSuccess = '[Quiz Effect] Load Quiz List Success',
@@ -20,12 +22,13 @@ export enum QuizActionTypes {
   DeleteQuiz = '[Quiz Details Component] Delete Quiz',
   DeleteQuizSuccess = '[Quiz Effect] Delete Quiz Success',
   DeleteQuizFailure = '[Quiz Effect] Delete Quiz Failure',
-  SelectQuestionSet = '[Quiz Test Component] Question set selected',
-  UnselectQuestionSet = '[Quiz Test Component] Question set unselected',
+  LoadQuizTestQuestions = '[Quiz Test Component] Loaded quiz questions'
 }
 
 export class QuizActions {
   static selectQuiz = createAction(QuizActionTypes.SelectQuiz, props<{ quiz: Quiz }>());
+  static unselectQuiz = createAction(QuizActionTypes.UnselectQuiz, props<{ quiz: Quiz }>());
+  static editQuiz = createAction(QuizActionTypes.EditQuiz, props<{ quiz: Quiz }>());
   static clearQuizData = createAction(QuizActionTypes.ClearQuizData);
   static loadQuizList = createAction(QuizActionTypes.LoadQuizList);
   static loadQuizListSuccess = createAction(QuizActionTypes.LoadQuizListSuccess, props<{ list: Quiz[] }>());
@@ -39,6 +42,5 @@ export class QuizActions {
   static deleteQuiz = createAction(QuizActionTypes.DeleteQuiz, props<{ id: string }>());
   static deleteQuizSuccess = createAction(QuizActionTypes.DeleteQuizSuccess, props<{ id: string }>());
   static deleteQuizFailure = createAction(QuizActionTypes.DeleteQuizFailure, props<{ error: any }>());
-  static selectQuestionSet = createAction(QuizActionTypes.SelectQuestionSet, props<{ set: QuestionSet }>());
-  static unselectQuestionSet = createAction(QuizActionTypes.UnselectQuestionSet, props<{ set: QuestionSet }>());
+  static loadQuizTestQuestions = createAction(QuizActionTypes.LoadQuizTestQuestions, props<{ questions: Question[] }>());
 }

@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     {
       _id: mongoose.Types.ObjectId(),
       title: req.body.title,
-      sets: req.body.sets
+      questions: req.body.questions
     }
   )
 
@@ -23,7 +23,7 @@ exports.update = async (req, res) => {
     { _id: req.body._id },
     {
       title: req.body.title,
-      sets: req.body.sets
+      questions: req.body.questions
     },
     { new: true }
   )
@@ -32,6 +32,5 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const deleted = await Quiz.findByIdAndDelete({ _id: req.params.id })
-
-  res.json({ success: true, msg: `Quiz ${deleted.title} has been deleted` })
+  res.json(deleted._id)
 }

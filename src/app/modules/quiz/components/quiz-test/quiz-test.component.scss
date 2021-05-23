@@ -8,19 +8,19 @@ mat-radio-group {
 }
 
 .stickyHeaderContainer {
-  margin: 0.5rem 0;
-  button {
-    margin: 0 0.5rem 0 0;
+  .buttonsContainer {
+    width: 100%;
+    button {
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
   }
-  .answersInfoContainer{
+  .answersInfoContainer {
     margin: 0.5rem 0;
-    mat-chip{
+    mat-chip {
       margin: 0 0.5rem 0 0;
     }
   }
 }
-
-
 
 .correctAnswer {
   color: green;

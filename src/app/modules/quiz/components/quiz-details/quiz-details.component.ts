@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.store';
 import { cast, isDefined } from 'src/app/shared/utils/utils';
-import { QuestionSet } from '../../models/question-set';
+import { Question } from '../../models/question';
 import { Quiz } from '../../models/quiz';
 import { QuizActions } from '../../state/quiz.actions';
 import { QuizSelectors } from '../../state/quiz.selectors';
@@ -16,8 +16,8 @@ import { QuizSelectors } from '../../state/quiz.selectors';
 })
 export class QuizDetailsComponent implements OnDestroy {
 
-  get setsFormArray(): FormArray {
-    return cast<FormArray>(this.quizForm.get('sets'));
+  get questionsFormArray(): FormArray {
+    return cast<FormArray>(this.quizForm.get('questions'));
   }
 
   quizForm: FormGroup = this.createQuizFormGroup();
@@ -33,7 +33,7 @@ export class QuizDetailsComponent implements OnDestroy {
     private readonly _store: Store<AppState>
   ) {
     this._sub.add(
-      this._store.pipe(select(QuizSelectors.quizSelected))
+      this._store.pipe(select(QuizSelectors.quizEditing))
         .subscribe(selected => {
           if (selected) {
             this.initializeWith(selected);
@@ -56,18 +56,13 @@ export class QuizDetailsComponent implements OnDestroy {
     this.quizId = quiz._id;
     this.quizForm = this.createQuizFormGroup(
       quiz.title,
-      quiz.sets.map(set =>
-        this.createSetFormGroup(
-          set.title,
-          set.questions.map(question =>
-            this.createQuestionFormGroup(
-              question.text,
-              question.answers.map(answer =>
-                this.createAnswerFormGroup(
-                  answer.text,
-                  answer.isCorrect
-                )
-              )
+      quiz.questions.map(question =>
+        this.createQuestionFormGroup(
+          question.text,
+          question.answers.map(answer =>
+            this.createAnswerFormGroup(
+              answer.text,
+              answer.isCorrect
             )
           )
         )
@@ -75,22 +70,15 @@ export class QuizDetailsComponent implements OnDestroy {
     );
   }
 
-  getSetQuestions(index: number): FormArray {
-    return cast<FormArray>(this.setsFormArray.at(index).get('questions'));
-  }
-  getQuestionAnswers(setIndex: number, questionIndex: number): FormArray {
-    return cast<FormArray>(this.getSetQuestions(setIndex).at(questionIndex).get('answers'));
+  getQuestionAnswers(questionIndex: number): FormArray {
+    return cast<FormArray>(this.questionsFormArray.at(questionIndex).get('answers'));
   }
 
-  createQuizFormGroup(title = 'NEW QUIZ', sets: FormGroup[] = []): FormGroup {
+  createQuizFormGroup(title = 'NEW QUIZ', questions: FormGroup[] = []): FormGroup {
     return this._fb.group({
       title,
-      sets: this._fb.array(sets)
+      questions: this._fb.array(questions)
     });
-  }
-
-  createSetFormGroup(title = 'NEW SET', questions: FormGroup[] = []): FormGroup {
-    return this._fb.group({ title, questions: this._fb.array(questions) });
   }
 
   createQuestionFormGroup(text = '', answers: FormGroup[] = []): FormGroup {
@@ -101,28 +89,20 @@ export class QuizDetailsComponent implements OnDestroy {
     return this._fb.group({ text, isCorrect });
   }
 
-  addSet(): void {
-    this.setsFormArray.push(this.createSetFormGroup());
+  addQuestion(): void {
+    this.questionsFormArray.push(this.createQuestionFormGroup());
   }
 
-  addQuestion(index: number): void {
-    this.getSetQuestions(index).push(this.createQuestionFormGroup());
+  addAnswer(questionIndex: number): void {
+    this.getQuestionAnswers(questionIndex).push(this.createAnswerFormGroup());
   }
 
-  addAnswer(setIndex: number, questionIndex: number): void {
-    this.getQuestionAnswers(setIndex, questionIndex).push(this.createAnswerFormGroup());
+  removeQuestion(questionIndex: number): void {
+    this.questionsFormArray.removeAt(questionIndex);
   }
 
-  removeSet(index: number): void {
-    this.setsFormArray.removeAt(index);
-  }
-
-  removeQuestion(setIndex: number, questionIndex: number): void {
-    this.getSetQuestions(setIndex).removeAt(questionIndex);
-  }
-
-  removeAnswer(setIndex: number, questionIndex: number, answerIndex: number): void {
-    this.getQuestionAnswers(setIndex, questionIndex).removeAt(answerIndex);
+  removeAnswer(questionIndex: number, answerIndex: number): void {
+    this.getQuestionAnswers(questionIndex).removeAt(answerIndex);
   }
 
   onSubmit(): void {
@@ -132,7 +112,7 @@ export class QuizDetailsComponent implements OnDestroy {
         const quiz: Quiz = {
           _id: this.quizId,
           title: cast<string>(this.quizForm.get('title')?.value).trim(),
-          sets: cast<QuestionSet[]>(this.quizForm.get('sets')?.value)
+          questions: cast<Question[]>(this.quizForm.get('questions')?.value)
         };
         isDefined(quiz._id)
           ? this._store.dispatch(QuizActions.updateQuiz({ quiz, changes: quiz })) // TODO update only changed properties

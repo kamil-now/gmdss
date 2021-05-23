@@ -1,7 +1,7 @@
+import { Answer } from './answer';
+
 export type Question = {
+  _id?: string,
   text: string,
-  answers: [{
-    text: string,
-    isCorrect: boolean
-  }]
+  answers: Answer[]
 };

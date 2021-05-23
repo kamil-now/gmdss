@@ -1,7 +1,7 @@
-import { QuestionSet } from './question-set';
+import { Question } from './question';
 
 export type Quiz = {
   _id?: string;
   title: string;
-  sets: QuestionSet[];
+  questions: Question[];
 };
